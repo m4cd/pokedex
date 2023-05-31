@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func commandHelp() error {
+func commandHelp(state *State, args ...string) error {
 	fmt.Println("")
 	fmt.Println("Usage:")
 	fmt.Println("")

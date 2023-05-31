@@ -10,7 +10,7 @@ import (
 type cliCmd struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(*State, ...string) error
 }
 
 func getCommands() map[string]cliCmd {
@@ -25,10 +25,25 @@ func getCommands() map[string]cliCmd {
 			description: "Exit the Pokedex",
 			callback:    commandExit,
 		},
+		"map": {
+			name:        "map",
+			description: "Prints next 20 locations",
+			callback:    commandMap,
+		},
+		"mapb": {
+			name:        "mapb",
+			description: "Prints previous 20 locations",
+			callback:    commandMapb,
+		},
+		"explore": {
+			name:        "explore <location>",
+			description: "Explores provided location",
+			callback:    commandExplore,
+		},
 	}
 }
 
-func repl() {
+func repl(state *State) {
 	fmt.Print("Welcome to pokedex!\n\n")
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
@@ -41,16 +56,23 @@ func repl() {
 		}
 
 		cmd := strings.ToLower(input[0])
+		args := []string{}
+
+		if len(input) > 1 {
+			args = input[1:]
+		}
 
 		commands := getCommands()
-
 		command, exists := commands[cmd]
 
 		if exists {
-			command.callback()
+			err := command.callback(state, args...)
+			if err != nil {
+				fmt.Printf("%v\n", err)
+			}
 			continue
 		} else {
-			fmt.Println("Nonexistent command")
+			fmt.Println("Non-existent command")
 			continue
 		}
 	}
