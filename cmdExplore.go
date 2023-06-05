@@ -16,9 +16,9 @@ func commandExplore(state *State, args ...string) error {
 	if err != nil {
 		return err
 	}
-
+	fmt.Printf("Pokemons found in %v:\n", locationName)
 	for _, pokemon := range l.PokemonEncounters {
-		fmt.Printf("+- %v\n", pokemon)
+		fmt.Printf("+- %v\n", pokemon.Pokemon.Name)
 	}
 	return nil
 }
