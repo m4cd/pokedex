@@ -7,14 +7,18 @@ import (
 )
 
 type State struct {
-	pokeapiClient pokeapi.Client
-	next          *string
-	previous      *string
+	pokeapiClient  pokeapi.Client
+	next           *string
+	previous       *string
+	pokemonsCaught map[string]pokeapi.PokemonDetails
+	difficulty     int
 }
 
 func main() {
 	state := State{
-		pokeapiClient: pokeapi.NewClient(5 * time.Minute),
+		pokeapiClient:  pokeapi.NewClient(5 * time.Minute),
+		pokemonsCaught: map[string]pokeapi.PokemonDetails{},
+		difficulty:     40,
 	}
 	repl(&state)
 }
